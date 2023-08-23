@@ -1,0 +1,40 @@
+# Author: 'JingLi <lijingakaaioria@gmail.com>'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: gitlab
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: nfs-csi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc
+  namespace: gitlab
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: nfs-csi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitlab-pvc
+  namespace: gitlab
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: nfs-csi
