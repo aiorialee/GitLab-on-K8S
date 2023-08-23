@@ -4,7 +4,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: code
-  namespace: gitlab
+  namespace: jing-gitlab
 spec:
   type: LoadBalancer
   ports:
@@ -17,15 +17,15 @@ spec:
       port: 22
       targetPort: 22
   selector:
-    app: gitlab
+    app: jing-gitlab
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: gitlab
-  namespace: gitlab
+  name: jing-gitlab
+  namespace: jing-gitlab
   labels:
-    name: gitlab
+    name: jing-gitlab
 spec:
   ports:
     - name: http
@@ -35,27 +35,27 @@ spec:
       port: 22
       targetPort: ssh
   selector:
-    app: gitlab
+    app: jing-gitlab
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gitlab
-  namespace: gitlab
+  name: jing-gitlab
+  namespace: jing-gitlab
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gitlab
+      app: jing-gitlab
   template:
     metadata:
-      name: gitlab
+      name: jing-gitlab
       labels:
-        app: gitlab
+        app: jing-gitlab
     spec:
       containers:
-      - name: gitlab
-        image: sameersbn/gitlab:15.6.8
+      - name: jing-gitlab
+        image: sameersbn/jing-gitlab:15.6.8
         env:
         - name: TZ
           value: Asia/Shanghai
@@ -66,31 +66,31 @@ spec:
           # Be used to encrypt CI secret variables, as well as import credentials, in the database.
           valueFrom:
             secretKeyRef:
-              name: gitlab
-              key: gitlab_secrets_db_key_base
+              name: jing-gitlab
+              key: jing-gitlab_secrets_db_key_base
         - name: GITLAB_SECRETS_SECRET_KEY_BASE
           # Be used for password reset links, and other 'standard' auth features.
           valueFrom:
             secretKeyRef:
-              name: gitlab
-              key: gitlab_secrets_secret_key_base
+              name: jing-gitlab
+              key: jing-gitlab_secrets_secret_key_base
         - name: GITLAB_SECRETS_OTP_KEY_BASE
           # Be used to encrypt 2FA secrets in the database. "long-and-random-alpha-numeric-string"
           valueFrom:
             secretKeyRef:
-              name: gitlab
-              key: gitlab_secrets_otp_key_base
+              name: jing-gitlab
+              key: jing-gitlab_secrets_otp_key_base
 
         - name: GITLAB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: gitlab
-              key: gitlab_root_pass
+              name: jing-gitlab
+              key: jing-gitlab_root_pass
         - name: GITLAB_ROOT_EMAIL 
           value: mage@jingli.com
 
         - name: GITLAB_HOST
-          value: gitlab.gitlab.svc.cluster.local
+          value: jing-gitlab.jing-gitlab.svc.cluster.local
         - name: GITLAB_PORT
           value: "80"
         - name: GITLAB_SSH_PORT
@@ -115,15 +115,15 @@ spec:
         - name: DB_USER        
           valueFrom:
             secretKeyRef:
-              name: gitlab
+              name: jing-gitlab
               key: db_user
         - name: DB_PASS         
           valueFrom:
             secretKeyRef:
-              name: gitlab
+              name: jing-gitlab
               key: db_pass
         - name: DB_NAME
-          value: gitlab_production
+          value: jing-gitlab_production
 
         - name: REDIS_HOST
           value: redis
@@ -184,4 +184,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: gitlab-pvc
+          claimName: jing-gitlab-pvc

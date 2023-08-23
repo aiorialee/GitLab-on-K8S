@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gitlab
-  namespace: gitlab
+  name: jing-gitlab
+  namespace: jing-gitlab
 spec:
   ingressClassName: 'nginx'
   rules:
@@ -11,18 +11,18 @@ spec:
       paths:
       - backend:
           service:
-            name: gitlab
+            name: jing-gitlab
             port: 
               number: 80 
         path: /
         pathType: Prefix
-  - host: gitlab.jingli.com
+  - host: jing-gitlab.jingli.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: gitlab
+            name: jing-gitlab
             port:
               number: 80
